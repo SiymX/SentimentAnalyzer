@@ -51,7 +51,7 @@ nltk.download('vader_lexicon')
 
 
 # Usage
-You can either run the program via Terminal or run the `exe` file if you are using an Windows Device. To run it on terminal do the following:
+You can either run the program via Terminal or run the `exe` file located in the ```/dist``` folder if you are using an Windows Device. To run it on terminal do the following:
 1. Open terminal and navigate to the directory where the program files are located.
 2. Run the following command to start the Sentiment Analyzer:
 ```
