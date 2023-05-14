@@ -1,17 +1,47 @@
 import tkinter as tk
 import nltk
 import requests
+import re
+from word2number import w2n
 from tkinter import ttk
 from PIL import Image, ImageTk
 from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.tokenize import word_tokenize
 
+nltk.download('averaged_perceptron_tagger')
 nltk.download('vader_lexicon')
 
 analyzer = SentimentIntensityAnalyzer()
 
 
+def convert_numbers(sentence):
+    words = sentence.split()
+    for i in range(len(words)):
+        try:
+            words[i] = str(w2n.word_to_num(words[i]))
+        except ValueError:
+            pass
+    return ' '.join(words)
+
+
+def get_word_role(word, sentence):
+    words = word_tokenize(sentence)
+    tagged_words = nltk.pos_tag(words)
+
+    for i, tagged_word in enumerate(tagged_words):
+        if tagged_word[0].lower() == word.lower():
+            if word.lower() == "am" and ((i > 0 and re.search(r'\d', tagged_words[i - 1][0])) or
+                                         (i < len(tagged_words) - 1 and re.search(r'\d', tagged_words[i + 1][0]))):
+                return "Time"
+            else:
+                return tagged_word[1]
+
+    return 'Role Not found'
+
+
 def analyze_sentiment():
     text = input_field.get("1.0", "end").strip()
+    text = convert_numbers(text)
     if text and text != "Please enter some text...":
         words = text.split()
         if len(words) <= 20:
@@ -25,20 +55,29 @@ def analyze_sentiment():
                 sentiment = "This is a Neutral sentiment."
 
             explanations = []
-            for word in words:
-                explanation = get_word_explanation(word)
+            roles = []
+            for i, word in enumerate(words):
+                role = get_word_role(word, text)
+                roles.append(role)
+                if word.lower() == 'am' and i > 0 and words[i - 1].isdigit():
+                    explanation = "Referring to time"
+                elif word.lower() == 'am' and 'VB' in role:
+                    explanation = "First person singular present of 'be'"
+                else:
+                    explanation = get_word_explanation(word)
                 explanations.append(explanation)
 
             output_text = sentiment
             output_text += ' It is because: \n'
-            for word, explanation in zip(words, explanations):
-                output_text += f'{word}: {explanation}\n'
+            for word, explanation, role in zip(words, explanations, roles):
+                output_text += f'{word} ({role}): {explanation}\n'
 
             output_label.config(text=output_text)
         else:
             output_label.config(text="Please enter no more than 20 words.")
     else:
         output_label.config(text="Please enter some text.")
+
 
 
 def create_gradient(width, height):
