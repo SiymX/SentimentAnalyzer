@@ -61,7 +61,7 @@ python SentimentAnalyzer.py
 ```
 3. The GUI Window of the Sentiment Analayzer will appear.
 4. Click the **Analyze** button to perform the analaysis.
-5. The sentiment analysis will display the output on the outpyt label with each individual words with their explanation.
+5. The sentiment analysis will display the output on the output label with each individual words with their explanation.
 
 
 
