@@ -1,6 +1,9 @@
-# SentimentAnalyzer
-![senimage](https://github.com/SiymX/SentimentAnalyzer/assets/63435885/f95984ff-15e4-477e-b1c7-3ca57ffbb6b7)
 
+
+![sentimentGIT](https://github.com/SiymX/SentimentAnalyzer/assets/63435885/271c59ad-ac23-4aa5-a530-a489d4b9fcf1)
+
+
+# SentimentAnalyzer
 This program is a Python-based sentiment analyzer that will determine the sentiment of text input and will give individual explanations 
 for each word. This also utilizes the Natural Language Toolkit (NLTK) library for sentiment analysis and the tkinter library for an
 interactive Graphical User Interface (GUI).
